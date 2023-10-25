@@ -24,6 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         // Проверка существует ли юзер
         Optional<User> existingUser = userService.findByUsername(user.getUsername());
@@ -46,6 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<User> login(@RequestBody User login) {
         Optional<User> optionalUser = userService.findByUsername(login.getUsername());
         if (optionalUser.isPresent()) {
