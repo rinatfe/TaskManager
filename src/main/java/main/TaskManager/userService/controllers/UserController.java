@@ -1,5 +1,6 @@
 package main.TaskManager.userService.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import main.TaskManager.userService.entity.User;
 import main.TaskManager.userService.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +49,16 @@ public class UserController {
 
     @PostMapping("/login")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<User> login(@RequestBody User login) {
+    public ResponseEntity<?> login(@RequestBody User login, HttpSession session) {
         Optional<User> optionalUser = userService.findByUsername(login.getUsername());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (passwordEncoder.matches(login.getPassword(), user.getPassword())) {
                 // The password matches, return the user and OK status
-                return new ResponseEntity<>(user, HttpStatus.OK);
+                session.setAttribute("user", user);
+                return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/main").build();
             }
         }
-
         // Username not found or password mismatch, return Unauthorized error
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
