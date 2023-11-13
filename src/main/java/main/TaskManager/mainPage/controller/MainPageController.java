@@ -2,10 +2,12 @@ package main.TaskManager.mainPage.controller;
 
 import main.TaskManager.mainPage.data.entity.Task;
 import main.TaskManager.mainPage.service.TaskService;
+import main.TaskManager.userService.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,15 +22,19 @@ public class MainPageController {
     }
     // Метод GET, возвращающий все сущности
     @GetMapping("/all")
-    @PreAuthorize("#id == authentication.principal.id")
-    public List<Task> getAllEntities(@RequestParam("id") Long userId) {
+    @PreAuthorize("#user.id == authentication.principal.id")
+    public List<Task> getAllEntities(@SessionAttribute User user) {
         // Здесь нужно реализовать логику для получения всех сущностей
         // Например, можно использовать сервис для доступа к данным
-        return taskService.getAllEntities(userId);
+        List<Task> tasks = taskService.getAllEntities(user.getId());
+        if (tasks == null) {
+            return new ArrayList<>(); // or Collections.emptyList();
+        }
+        return tasks;
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id")
+    @PreAuthorize("#user.id == authentication.principal.id")
     public Task getEntityById(@PathVariable Long id) {
         // Здесь нужно реализовать логику для получения всех сущностей
         // Например, можно использовать сервис для доступа к данным
@@ -37,7 +43,7 @@ public class MainPageController {
 
     // Метод POST, создающий сущность
     @PostMapping("/create")
-    @PreAuthorize("#id == authentication.principal.id")
+    @PreAuthorize("#user.id == authentication.principal.id")
     public void createEntity(@RequestBody Task entity) {
         // Здесь нужно реализовать логику для создания сущности
         // Например, можно использовать сервис для сохранения сущности
