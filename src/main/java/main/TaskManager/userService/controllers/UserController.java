@@ -56,7 +56,7 @@ public class UserController {
             if (passwordEncoder.matches(login.getPassword(), user.getPassword())) {
                 // The password matches, return the user and OK status
                 session.setAttribute("user", user);
-                return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/main").build();
+                return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/main/all").build();
             }
         }
         // Username not found or password mismatch, return Unauthorized error

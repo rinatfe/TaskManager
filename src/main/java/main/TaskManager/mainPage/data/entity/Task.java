@@ -17,7 +17,5 @@ public class Task {
     private String description;
     private String attachment;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private String userId;
+    private Long userId;
 }

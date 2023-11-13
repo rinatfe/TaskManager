@@ -2,10 +2,8 @@ package main.TaskManager.mainPage.controller;
 
 import main.TaskManager.mainPage.data.entity.Task;
 import main.TaskManager.mainPage.service.TaskService;
-import main.TaskManager.userService.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +36,7 @@ public class MainPageController {
     }
 
     // Метод POST, создающий сущность
-    @PostMapping
+    @PostMapping("/create")
     @PreAuthorize("#id == authentication.principal.id")
     public void createEntity(@RequestBody Task entity) {
         // Здесь нужно реализовать логику для создания сущности
